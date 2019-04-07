@@ -73,33 +73,52 @@ namespace Life
         private int CheckNeighBours(int i, int j)
         {
             var counter = 0;
-            for (var k = -1; k < 2; ++k)
+            for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
             {
-                if (i - 1 > 0 && j + k > 0 && j + k < Size && (ExistsBacteria(i - 1, j + k)))
+                for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
                 {
-                    ++counter;
+                    if (currentRow == i && currentColumn == j) // переименовать i, j, k, m
+                    {
+                        continue;
+                    }
+                    if (ExistsBacteria(currentRow, currentColumn))
+                    {
+                        ++counter;
+                    }
                 }
-
-                if (j + k > 0 && j + k < Size && i + 1 < Size && ExistsBacteria(i + 1, j + k))
-                {
-                    ++counter;
-                }
-            }
-            if (j - 1 > 0 && ExistsBacteria(i, j - 1))
-            {
-                ++counter;
-            }
-            if (j + 1 < Size && ExistsBacteria(i, j + 1)) //ввести бы бесконечное поле
-            {
-                ++counter; // это явно может быть лучше
             }
             return counter;
         }
 
-        public bool ExistsBacteria(int i, int j) => Terraria[i, j] == 1;
+        private bool OnTheEdge(int i, int j) => i < 0 || j < 0 || i == Size || j == Size;
+
+        public bool ExistsBacteria(int i, int j)
+        {
+            if (!OnTheEdge(i, j))
+            {
+                return Terraria[i, j] == 1;
+            }
+            if (i < 0)
+            {
+                i = Size + i;
+            }
+            else if (i == Size)
+            {
+                i = 0;
+            }
+            if (j < 0)
+            {
+                j = Size + j;
+            }
+            else if (j == Size)
+            {
+                j = 0;
+            }
+            return Terraria[i, j] == 1;
+        }
 
         private void KillBacteria(int i, int j, int[,] terraria) => terraria[i, j] = 0;
 
         private void BornBacteria(int i, int j, int[,] terraria) => terraria[i, j] = 1;
-    }
+    } // что-то здесь private, а что-то public
 }

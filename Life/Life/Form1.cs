@@ -23,13 +23,13 @@ namespace Life
         {
             gameLogic = new GameLogic(); // спросить бы пользователя, какой размер поля ему нужен
             pictureBox1 = new PictureBox();
-            pictureBox1.Width = 816;
-            pictureBox1.Height = 583 - 30;
+            pictureBox1.Width = 800;
+            pictureBox1.Height = 580 - 30;
             bmp = new Bitmap(pictureBox1.Height, pictureBox1.Width);
             pen = new Pen(Color.Black);
             g = Graphics.FromImage(bmp);
             InitializeComponent();
-        }
+        } // что-то с лейаутами, считать шаги и время
 
         private void StartClick(object sender, EventArgs e) => timer.Enabled = true;
 
@@ -67,5 +67,7 @@ namespace Life
         {
             timer.Enabled = false;
         }
+
+        private void ExitClick(object sender, EventArgs e) => Close();
     }
 }
