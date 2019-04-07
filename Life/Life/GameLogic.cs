@@ -10,35 +10,29 @@ namespace Life
     public class GameLogic
     {
         public int[,] Terraria { get; set; }
-        public int Size { get; set; } = 20;
+        public int Size { get; set; } = 50;
 
-        public int Limit { get; set; } = 100;
+        public int Limit { get; set; } = 1300;
 
         public GameLogic()
         {
             Terraria = new int[Size, Size];
-            var counter = 0;
             var rnd = new Random();
-            for (var i = 0; i < Size; ++i)
+            for (var counter = 0; counter < Limit; ++counter)
             {
-                for (var j = 0; j < Size; ++j)
+                var isBacteria = rnd.Next(0, 2);
+                if (isBacteria == 1)
                 {
-                    var isBacteria = rnd.Next(0, 4);
-                    if (isBacteria == 1 && counter < Limit)
-                    {
-                        BornBacteria(i, j);
-                        ++counter;
-                        if (counter >= Limit)
-                        {
-                            return;
-                        }
-                    }
+                    var i = rnd.Next(0, Size);
+                    var j = rnd.Next(0, Size);
+                    BornBacteria(i, j, Terraria);
                 }
             }
         }
 
         public void Step()
         {
+            var tempTerraria = CopyTerraria();
             for (var i = 0; i < Size; ++i)
             {
                 for (var j = 0; j < Size; ++j)
@@ -47,20 +41,34 @@ namespace Life
                     {
                         if (CheckNeighboursForLivingBacteria(i, j))
                         {
-                            KillBacteria(i, j);
+                            KillBacteria(i, j, tempTerraria);
                         }
                     }
                     else if (CheckNeighboursForEmptyCell(i, j))
                     {
-                        BornBacteria(i, j); //может, не нужно столько функций
+                        BornBacteria(i, j, tempTerraria); //может, не нужно столько функций
                     }
                 }
             }
+            Terraria = tempTerraria;
         }
 
-        private bool CheckNeighboursForLivingBacteria(int i, int j) => CheckNeighBours(i, j) < 3 || CheckNeighBours(i, j) > 4;
+        private int[,] CopyTerraria()
+        {
+            var tempTerraria = new int[Size, Size];
+            for (int i = 0; i < Size; ++i)
+            {
+                for (int j = 0; j < Size; ++j)
+                {
+                    tempTerraria[i, j] = Terraria[i, j];
+                }
+            }
+            return tempTerraria;
+        }
 
-        private bool CheckNeighboursForEmptyCell(int i, int j) => CheckNeighBours(i, j) > 2;
+        private bool CheckNeighboursForLivingBacteria(int i, int j) => CheckNeighBours(i, j) < 2 || CheckNeighBours(i, j) > 3;
+
+        private bool CheckNeighboursForEmptyCell(int i, int j) => CheckNeighBours(i, j) == 3;
 
         private int CheckNeighBours(int i, int j)
         {
@@ -81,7 +89,7 @@ namespace Life
             {
                 ++counter;
             }
-            if (j + 1 < Size && ExistsBacteria(i, j + 1))
+            if (j + 1 < Size && ExistsBacteria(i, j + 1)) //ввести бы бесконечное поле
             {
                 ++counter; // это явно может быть лучше
             }
@@ -90,8 +98,8 @@ namespace Life
 
         public bool ExistsBacteria(int i, int j) => Terraria[i, j] == 1;
 
-        private void KillBacteria(int i, int j) => Terraria[i, j] = 0;
+        private void KillBacteria(int i, int j, int[,] terraria) => terraria[i, j] = 0;
 
-        private void BornBacteria(int i, int j) => Terraria[i, j] = 1;
+        private void BornBacteria(int i, int j, int[,] terraria) => terraria[i, j] = 1;
     }
 }

@@ -23,36 +23,49 @@ namespace Life
         {
             gameLogic = new GameLogic(); // спросить бы пользователя, какой размер поля ему нужен
             pictureBox1 = new PictureBox();
-            pictureBox1.Width = gameLogic.Limit * width;
-            pictureBox1.Height = gameLogic.Limit * height;
+            pictureBox1.Width = 816;
+            pictureBox1.Height = 583 - 30;
             bmp = new Bitmap(pictureBox1.Height, pictureBox1.Width);
             pen = new Pen(Color.Black);
             g = Graphics.FromImage(bmp);
             InitializeComponent();
         }
 
-        private void StartClick(object sender, EventArgs e) => timer1.Enabled = true;
+        private void StartClick(object sender, EventArgs e) => timer.Enabled = true;
 
         private void Timer1Tick(object sender, EventArgs e)
         {
             gameLogic.Step();
+            Refresh();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            var leftBorder = pictureBox1.Width / 2 - gameLogic.Size * width / 2;
+            var solidBrush = new SolidBrush(Color.OliveDrab);
             for (var i = 0; i < gameLogic.Size; ++i) // ага, и здесь можно лучше
             {
                 for (var j = 0; j < gameLogic.Size; ++j)
                 {
                     if (gameLogic.ExistsBacteria(i, j))
                     {
-                        //g.DrawRectangle(pen, 100, 100, 200, 200);
-                        e.Graphics.DrawEllipse(pen, i * width, j * height, width, height);
-                        //e.Graphics.DrawLine(pen, new Point(0, 0), new Point(35, 35));
+                        //e.Graphics.DrawEllipse(pen, i * width + leftBorder, j * height, width, height);
+                        e.Graphics.FillEllipse(solidBrush, i * width + leftBorder, j * height, width, height);
                         pictureBox1.Image = bmp;
                     }
                 }
             }
+        }
+
+        private void Form1Load(object sender, EventArgs e)
+        {
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+            UpdateStyles();
+        }
+
+        private void StopClick(object sender, EventArgs e)
+        {
+            timer.Enabled = false;
         }
     }
 }

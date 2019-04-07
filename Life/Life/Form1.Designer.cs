@@ -29,33 +29,49 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.button1 = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.start = new System.Windows.Forms.Button();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.stop = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // start
             // 
-            this.button1.Location = new System.Drawing.Point(116, 464);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(84, 36);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "start";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.StartClick);
+            this.start.Location = new System.Drawing.Point(241, 507);
+            this.start.Name = "start";
+            this.start.Size = new System.Drawing.Size(84, 36);
+            this.start.TabIndex = 0;
+            this.start.Text = "start";
+            this.start.UseVisualStyleBackColor = true;
+            this.start.Click += new System.EventHandler(this.StartClick);
             // 
-            // timer1
+            // timer
             // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.Timer1Tick);
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.Timer1Tick);
+            // 
+            // stop
+            // 
+            this.stop.Location = new System.Drawing.Point(471, 507);
+            this.stop.Name = "stop";
+            this.stop.Size = new System.Drawing.Size(85, 36);
+            this.stop.TabIndex = 1;
+            this.stop.Text = "stop";
+            this.stop.UseVisualStyleBackColor = true;
+            this.stop.Click += new System.EventHandler(this.StopClick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.PaleGreen;
             this.ClientSize = new System.Drawing.Size(800, 544);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.stop);
+            this.Controls.Add(this.start);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Life";
+            this.Load += new System.EventHandler(this.Form1Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.ResumeLayout(false);
 
@@ -63,8 +79,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button start;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Button stop;
     }
 }
 
