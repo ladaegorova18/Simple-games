@@ -34,17 +34,25 @@
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.stop = new System.Windows.Forms.Button();
             this.exit = new System.Windows.Forms.Button();
+            this.stepText = new System.Windows.Forms.Label();
+            this.stepsCount = new System.Windows.Forms.Label();
+            this.stableCells = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // start
             // 
-            this.start.Location = new System.Drawing.Point(351, 507);
+            this.start.BackColor = System.Drawing.Color.SeaGreen;
+            this.start.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.start.ForeColor = System.Drawing.Color.Cornsilk;
+            this.start.Location = new System.Drawing.Point(312, 507);
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(84, 36);
             this.start.TabIndex = 0;
             this.start.Text = "start";
-            this.start.UseVisualStyleBackColor = true;
+            this.start.UseVisualStyleBackColor = false;
             this.start.Click += new System.EventHandler(this.StartClick);
+            this.start.MouseEnter += new System.EventHandler(this.OnStartMouseEnter);
+            this.start.MouseLeave += new System.EventHandler(this.OnStartMouseLeave);
             // 
             // timer
             // 
@@ -53,31 +61,76 @@
             // 
             // stop
             // 
+            this.stop.BackColor = System.Drawing.Color.SeaGreen;
+            this.stop.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.stop.ForeColor = System.Drawing.Color.Cornsilk;
             this.stop.Location = new System.Drawing.Point(169, 507);
             this.stop.Name = "stop";
             this.stop.Size = new System.Drawing.Size(85, 36);
             this.stop.TabIndex = 1;
             this.stop.Text = "stop";
-            this.stop.UseVisualStyleBackColor = true;
-            this.stop.Click += new System.EventHandler(this.StopClick);
+            this.stop.UseVisualStyleBackColor = false;
+            this.stop.Click += new System.EventHandler(this.OnStopClick);
             // 
             // exit
             // 
-            this.exit.Location = new System.Drawing.Point(545, 507);
+            this.exit.BackColor = System.Drawing.Color.SeaGreen;
+            this.exit.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.exit.ForeColor = System.Drawing.Color.Cornsilk;
+            this.exit.Location = new System.Drawing.Point(456, 507);
             this.exit.Name = "exit";
             this.exit.Size = new System.Drawing.Size(75, 36);
             this.exit.TabIndex = 2;
             this.exit.Text = "exit";
-            this.exit.UseVisualStyleBackColor = true;
-            this.exit.Click += new System.EventHandler(this.ExitClick);
+            this.exit.UseVisualStyleBackColor = false;
+            this.exit.Click += new System.EventHandler(this.OnExitClick);
+            this.exit.MouseEnter += new System.EventHandler(this.Exit_MouseEnter);
+            this.exit.MouseLeave += new System.EventHandler(this.OnExitMouseLeave);
+            // 
+            // stepText
+            // 
+            this.stepText.AutoSize = true;
+            this.stepText.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.stepText.Location = new System.Drawing.Point(27, 507);
+            this.stepText.Name = "stepText";
+            this.stepText.Size = new System.Drawing.Size(48, 21);
+            this.stepText.TabIndex = 3;
+            this.stepText.Text = "Step:";
+            // 
+            // stepsCount
+            // 
+            this.stepsCount.AutoSize = true;
+            this.stepsCount.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.stepsCount.Location = new System.Drawing.Point(93, 507);
+            this.stepsCount.Name = "stepsCount";
+            this.stepsCount.Size = new System.Drawing.Size(19, 21);
+            this.stepsCount.TabIndex = 4;
+            this.stepsCount.Text = "0";
+            // 
+            // stableCells
+            // 
+            this.stableCells.BackColor = System.Drawing.Color.SeaGreen;
+            this.stableCells.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.stableCells.ForeColor = System.Drawing.Color.Cornsilk;
+            this.stableCells.Location = new System.Drawing.Point(588, 507);
+            this.stableCells.Name = "stableCells";
+            this.stableCells.Size = new System.Drawing.Size(136, 36);
+            this.stableCells.TabIndex = 5;
+            this.stableCells.Text = "Show stable cells";
+            this.stableCells.UseVisualStyleBackColor = false;
+            this.stableCells.Click += new System.EventHandler(this.OnStableCellsClick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.BackColor = System.Drawing.Color.PaleGreen;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BackColor = System.Drawing.Color.LightGreen;
             this.ClientSize = new System.Drawing.Size(800, 544);
+            this.Controls.Add(this.stableCells);
+            this.Controls.Add(this.stepsCount);
+            this.Controls.Add(this.stepText);
             this.Controls.Add(this.exit);
             this.Controls.Add(this.stop);
             this.Controls.Add(this.start);
@@ -86,8 +139,9 @@
             this.Name = "Form1";
             this.Text = "Life";
             this.Load += new System.EventHandler(this.Form1Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1Paint);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -97,6 +151,9 @@
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Button stop;
         private System.Windows.Forms.Button exit;
+        private System.Windows.Forms.Label stepText;
+        private System.Windows.Forms.Label stepsCount;
+        private System.Windows.Forms.Button stableCells;
     }
 }
 

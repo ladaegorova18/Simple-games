@@ -7,14 +7,17 @@ using System.Threading.Tasks;
 
 namespace Life
 {
-    public class GameLogic
+    public class Game
     {
         public int[,] Terraria { get; set; }
+        private int[,] oldTerraria;
         public int Size { get; set; } = 50;
 
         public int Limit { get; set; } = 1300;
 
-        public GameLogic()
+        public int Steps { get; set; } = 0;
+
+        public Game()
         {
             Terraria = new int[Size, Size];
             var rnd = new Random();
@@ -33,6 +36,7 @@ namespace Life
         public void Step()
         {
             var tempTerraria = CopyTerraria();
+            oldTerraria = CopyTerraria(); // возможно, вместо двух хватит одной
             for (var i = 0; i < Size; ++i)
             {
                 for (var j = 0; j < Size; ++j)
@@ -51,6 +55,7 @@ namespace Life
                 }
             }
             Terraria = tempTerraria;
+            ++Steps;
         }
 
         private int[,] CopyTerraria()
@@ -114,11 +119,31 @@ namespace Life
             {
                 j = 0;
             }
-            return Terraria[i, j] == 1;
+            return Terraria[i, j] == 1; // тут можно лучше
         }
 
         private void KillBacteria(int i, int j, int[,] terraria) => terraria[i, j] = 0;
 
         private void BornBacteria(int i, int j, int[,] terraria) => terraria[i, j] = 1;
+
+        public int[,] FindStableCells()
+        {
+            var stableCells = new int[Size, Size];
+            for (var i = 0; i < Size; ++i)
+            {
+                for (var j = 0; j < Size; ++j)
+                {
+                    if (oldTerraria[i, j] == Terraria[i, j])
+                    {
+                        stableCells[i, j] = Terraria[i, j];
+                    }
+                    else
+                    {
+                        stableCells[i, j] = -1;
+                    }
+                }
+            }
+            return stableCells;
+        }
     } // что-то здесь private, а что-то public
 }
