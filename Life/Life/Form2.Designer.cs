@@ -40,7 +40,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "StableCells";
             this.Load += new System.EventHandler(this.Form2Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2Paint);
+            //this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2Paint);
             this.ResumeLayout(false);
 
         }

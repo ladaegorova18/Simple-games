@@ -36,7 +36,10 @@
             this.exit = new System.Windows.Forms.Button();
             this.stepText = new System.Windows.Forms.Label();
             this.stepsCount = new System.Windows.Forms.Label();
-            this.stableCells = new System.Windows.Forms.Button();
+            this.timeText = new System.Windows.Forms.Label();
+            this.time = new System.Windows.Forms.Label();
+            this.cellsText = new System.Windows.Forms.Label();
+            this.cellsCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // start
@@ -44,7 +47,7 @@
             this.start.BackColor = System.Drawing.Color.SeaGreen;
             this.start.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.start.ForeColor = System.Drawing.Color.Cornsilk;
-            this.start.Location = new System.Drawing.Point(312, 507);
+            this.start.Location = new System.Drawing.Point(384, 501);
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(84, 36);
             this.start.TabIndex = 0;
@@ -56,7 +59,7 @@
             // 
             // timer
             // 
-            this.timer.Interval = 1000;
+            this.timer.Interval = 500;
             this.timer.Tick += new System.EventHandler(this.Timer1Tick);
             // 
             // stop
@@ -64,27 +67,29 @@
             this.stop.BackColor = System.Drawing.Color.SeaGreen;
             this.stop.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.stop.ForeColor = System.Drawing.Color.Cornsilk;
-            this.stop.Location = new System.Drawing.Point(169, 507);
+            this.stop.Location = new System.Drawing.Point(207, 501);
             this.stop.Name = "stop";
             this.stop.Size = new System.Drawing.Size(85, 36);
             this.stop.TabIndex = 1;
             this.stop.Text = "stop";
             this.stop.UseVisualStyleBackColor = false;
             this.stop.Click += new System.EventHandler(this.OnStopClick);
+            this.stop.MouseEnter += new System.EventHandler(this.OnStopButtonMouseEnter);
+            this.stop.MouseLeave += new System.EventHandler(this.OnStopButtonMouseLeave);
             // 
             // exit
             // 
             this.exit.BackColor = System.Drawing.Color.SeaGreen;
             this.exit.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.exit.ForeColor = System.Drawing.Color.Cornsilk;
-            this.exit.Location = new System.Drawing.Point(456, 507);
+            this.exit.Location = new System.Drawing.Point(563, 501);
             this.exit.Name = "exit";
             this.exit.Size = new System.Drawing.Size(75, 36);
             this.exit.TabIndex = 2;
             this.exit.Text = "exit";
             this.exit.UseVisualStyleBackColor = false;
             this.exit.Click += new System.EventHandler(this.OnExitClick);
-            this.exit.MouseEnter += new System.EventHandler(this.Exit_MouseEnter);
+            this.exit.MouseEnter += new System.EventHandler(this.OnExitButtonMouseEnter);
             this.exit.MouseLeave += new System.EventHandler(this.OnExitMouseLeave);
             // 
             // stepText
@@ -107,18 +112,45 @@
             this.stepsCount.TabIndex = 4;
             this.stepsCount.Text = "0";
             // 
-            // stableCells
+            // timeText
             // 
-            this.stableCells.BackColor = System.Drawing.Color.SeaGreen;
-            this.stableCells.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.stableCells.ForeColor = System.Drawing.Color.Cornsilk;
-            this.stableCells.Location = new System.Drawing.Point(588, 507);
-            this.stableCells.Name = "stableCells";
-            this.stableCells.Size = new System.Drawing.Size(136, 36);
-            this.stableCells.TabIndex = 5;
-            this.stableCells.Text = "Show stable cells";
-            this.stableCells.UseVisualStyleBackColor = false;
-            this.stableCells.Click += new System.EventHandler(this.OnStableCellsClick);
+            this.timeText.AutoSize = true;
+            this.timeText.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.timeText.Location = new System.Drawing.Point(24, 486);
+            this.timeText.Name = "timeText";
+            this.timeText.Size = new System.Drawing.Size(51, 21);
+            this.timeText.TabIndex = 6;
+            this.timeText.Text = "Time:";
+            // 
+            // time
+            // 
+            this.time.AutoSize = true;
+            this.time.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.time.Location = new System.Drawing.Point(93, 486);
+            this.time.Name = "time";
+            this.time.Size = new System.Drawing.Size(19, 21);
+            this.time.TabIndex = 7;
+            this.time.Text = "0";
+            // 
+            // cellsText
+            // 
+            this.cellsText.AutoSize = true;
+            this.cellsText.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cellsText.Location = new System.Drawing.Point(26, 465);
+            this.cellsText.Name = "cellsText";
+            this.cellsText.Size = new System.Drawing.Size(49, 21);
+            this.cellsText.TabIndex = 8;
+            this.cellsText.Text = "Cells:";
+            // 
+            // cellsCount
+            // 
+            this.cellsCount.AutoSize = true;
+            this.cellsCount.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cellsCount.Location = new System.Drawing.Point(93, 465);
+            this.cellsCount.Name = "cellsCount";
+            this.cellsCount.Size = new System.Drawing.Size(19, 21);
+            this.cellsCount.TabIndex = 9;
+            this.cellsCount.Text = "0";
             // 
             // Form1
             // 
@@ -128,7 +160,10 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.LightGreen;
             this.ClientSize = new System.Drawing.Size(800, 544);
-            this.Controls.Add(this.stableCells);
+            this.Controls.Add(this.cellsCount);
+            this.Controls.Add(this.cellsText);
+            this.Controls.Add(this.time);
+            this.Controls.Add(this.timeText);
             this.Controls.Add(this.stepsCount);
             this.Controls.Add(this.stepText);
             this.Controls.Add(this.exit);
@@ -153,7 +188,10 @@
         private System.Windows.Forms.Button exit;
         private System.Windows.Forms.Label stepText;
         private System.Windows.Forms.Label stepsCount;
-        private System.Windows.Forms.Button stableCells;
+        private System.Windows.Forms.Label timeText;
+        private System.Windows.Forms.Label time;
+        private System.Windows.Forms.Label cellsText;
+        private System.Windows.Forms.Label cellsCount;
     }
 }
 

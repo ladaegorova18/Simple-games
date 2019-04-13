@@ -17,6 +17,9 @@ namespace Life
 
         public int Steps { get; set; } = 0;
 
+        /// <summary>
+        /// Game constructor creates the array and randomly fills it by alive cells 
+        /// </summary>
         public Game()
         {
             Terraria = new int[Size, Size];
@@ -33,10 +36,13 @@ namespace Life
             }
         }
 
+        /// <summary>
+        /// Makes a game step - checks game rules for every cell on field and does the action
+        /// </summary>
         public void Step()
         {
             var tempTerraria = CopyTerraria();
-            oldTerraria = CopyTerraria(); // возможно, вместо двух хватит одной
+            oldTerraria = CopyTerraria();
             for (var i = 0; i < Size; ++i)
             {
                 for (var j = 0; j < Size; ++j)
@@ -82,7 +88,7 @@ namespace Life
             {
                 for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
                 {
-                    if (currentRow == i && currentColumn == j) // переименовать i, j, k, m
+                    if (currentRow == i && currentColumn == j)
                     {
                         continue;
                     }
@@ -126,24 +132,20 @@ namespace Life
 
         private void BornBacteria(int i, int j, int[,] terraria) => terraria[i, j] = 1;
 
-        public int[,] FindStableCells()
+        public int CountCells()
         {
-            var stableCells = new int[Size, Size];
+            var count = 0;
             for (var i = 0; i < Size; ++i)
             {
                 for (var j = 0; j < Size; ++j)
                 {
-                    if (oldTerraria[i, j] == Terraria[i, j])
+                    if (Terraria[i, j] == 1)
                     {
-                        stableCells[i, j] = Terraria[i, j];
-                    }
-                    else
-                    {
-                        stableCells[i, j] = -1;
+                        ++count;
                     }
                 }
             }
-            return stableCells;
+            return count;
         }
     } // что-то здесь private, а что-то public
 }

@@ -13,7 +13,7 @@ namespace Life
     public partial class Form2 : Form
     {
         private Game game;
-        int Size { get; set; } = 50; // сделать бы его только get
+        //int Size { get; set; } = 50; // сделать бы его только get
         private Bitmap bmp;
         private Graphics g;
         private PictureBox pictureBox1;
@@ -50,7 +50,6 @@ namespace Life
                 {
                     if (game.FindStableCells()[i, j] == 1)
                     {
-                        //e.Graphics.DrawEllipse(pen, i * width + leftBorder, j * height, width, height); это эллипс как в условии, можно его
                         e.Graphics.FillEllipse(solidBrush, i * width + leftBorder, j * height, width, height);
                         pictureBox1.Image = bmp;
                     }

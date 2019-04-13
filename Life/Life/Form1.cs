@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Life
 {
@@ -20,6 +21,7 @@ namespace Life
         private int height = 10;
         private Pen pen;
         private Color oldColor;
+        private Stopwatch stopwatch = new Stopwatch();
 
         public Form1()
         {
@@ -31,9 +33,15 @@ namespace Life
             pen = new Pen(Color.Black);
             g = Graphics.FromImage(bmp);
             InitializeComponent();
+            var form2 = new Form2(game);
+            form2.Show();
         } // что-то с лейаутами, считать время
 
-        private void StartClick(object sender, EventArgs e) => timer.Enabled = true;
+        private void StartClick(object sender, EventArgs e)
+        {
+            timer.Enabled = true;
+            stopwatch.Start();
+        }
 
         private void Timer1Tick(object sender, EventArgs e)
         {
@@ -41,34 +49,52 @@ namespace Life
             Refresh();
         }
 
+        private void DrawGrid(int leftBorder, int rightBorder, int gameHeight, PaintEventArgs e)
+        {
+            for (var i = 0; i <= gameHeight; i += height)
+            {
+                var point1 = new PointF(leftBorder, i);
+                var point2 = new PointF(rightBorder, i);
+                e.Graphics.DrawLine(pen, point1, point2);
+            }
+            for (var j = leftBorder; j <= rightBorder; j += width)
+            {
+                var point1 = new PointF(j, 0);
+                var point2 = new PointF(j, gameHeight);
+                e.Graphics.DrawLine(pen, point1, point2);
+            }
+        }
+
         private void Form1Paint(object sender, PaintEventArgs e)
         {
             var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2;
             var solidBrush = new SolidBrush(Color.OliveDrab);
+            DrawCells(e, leftBorder, solidBrush);
+            DrawGrid(leftBorder, leftBorder + game.Size * width, height * game.Size, e);
+            stepsCount.Text = game.Steps.ToString();
+            WriteTime();
+            cellsCount.Text = game.CountCells().ToString();
+        }
+
+        private void WriteTime()
+        {
+            var currentTime = stopwatch.Elapsed.ToString();
+            time.Text = (currentTime).Substring(0, currentTime.Length - 6);
+        }
+
+        private void DrawCells(PaintEventArgs e, int leftBorder, SolidBrush solidBrush)
+        {
             for (var i = 0; i < game.Size; ++i) // ага, и здесь можно лучше
             {
                 for (var j = 0; j < game.Size; ++j)
                 {
                     if (game.ExistsBacteria(i, j))
                     {
-                        //e.Graphics.DrawEllipse(pen, i * width + leftBorder, j * height, width, height); это эллипс как в условии, можно его
                         e.Graphics.FillEllipse(solidBrush, i * width + leftBorder, j * height, width, height);
-                        DrawBorders(leftBorder, e); // дорисовать границы
                         pictureBox1.Image = bmp;
                     }
                 }
             }
-            stepsCount.Text = game.Steps.ToString();         
-        }
-
-        private void DrawBorders(int leftBorder, PaintEventArgs e)
-        {
-            var point1 = new PointF(leftBorder, 0);
-            var point2 = new PointF(leftBorder, game.Size * height);
-            e.Graphics.DrawLine(pen, point1, point2);
-            point1.X = leftBorder + game.Size * width;
-            point2.X = point1.X;
-            e.Graphics.DrawLine(pen, point1, point2);
         }
 
         private void Form1Load(object sender, EventArgs e)
@@ -77,29 +103,36 @@ namespace Life
             UpdateStyles();
         }
 
-        private void OnStopClick(object sender, EventArgs e) => timer.Enabled = false;
+        private void OnStopClick(object sender, EventArgs e)
+        {
+            timer.Enabled = false;
+            stopwatch.Stop();
+        }
 
         private void OnExitClick(object sender, EventArgs e) => Close();
 
-        private void OnStartMouseEnter(object sender, EventArgs e)
+        private void OnStartMouseEnter(object sender, EventArgs e) => OnMouseEnter(start);
+
+        private void OnStartMouseLeave(object sender, EventArgs e) => OnMouseLeave(start);
+
+        private void OnStopButtonMouseEnter(object sender, EventArgs e) => OnMouseEnter(stop);
+
+        private void OnStopButtonMouseLeave(object sender, EventArgs e) => OnMouseLeave(stop);
+
+        private void OnExitButtonMouseEnter(object sender, EventArgs e) => OnMouseEnter(exit);
+
+        private void OnExitMouseLeave(object sender, EventArgs e) => OnMouseLeave(exit);
+
+        private void OnMouseEnter(Button button)
         {
-            oldColor = start.BackColor;
-            start.BackColor = Color.LimeGreen;
+            oldColor = button.BackColor;
+            button.BackColor = Color.LimeGreen;
         }
 
-        private void OnStartMouseLeave(object sender, EventArgs e) => start.BackColor = oldColor;
-
-        private void Exit_MouseEnter(object sender, EventArgs e)
-        {
-            oldColor = exit.BackColor; // aaaaa copy-paste
-            exit.BackColor = Color.LimeGreen;
-        }
-
-        private void OnExitMouseLeave(object sender, EventArgs e) => exit.BackColor = oldColor;
-
-        private void OnStableCellsClick(object sender, EventArgs e)
-        {
-            var form2 = new Form2(game);
-        }
+        private void OnMouseLeave(Button button) => button.BackColor = oldColor;
     }
 }
+
+// при желании можно заменить сплошную раскраску бактерий на контур в методе DrawCells
+// e.Graphics.DrawEllipse(pen, i * width + leftBorder, j * height, width, height); это эллипс как в условии, можно его
+
