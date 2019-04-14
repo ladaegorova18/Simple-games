@@ -22,6 +22,7 @@ namespace Life
         private Pen pen;
         private Color oldColor;
         private Stopwatch stopwatch = new Stopwatch();
+        private Form2 form2;
 
         public Form1()
         {
@@ -33,7 +34,7 @@ namespace Life
             pen = new Pen(Color.Black);
             g = Graphics.FromImage(bmp);
             InitializeComponent();
-            var form2 = new Form2(game);
+            form2 = new Form2(game);
             form2.Show();
         } // что-то с лейаутами, считать время
 
@@ -47,6 +48,7 @@ namespace Life
         {
             game.Step();
             Refresh();
+            form2.Refresh();
         }
 
         private void DrawGrid(int leftBorder, int rightBorder, int gameHeight, PaintEventArgs e)
@@ -88,7 +90,7 @@ namespace Life
             {
                 for (var j = 0; j < game.Size; ++j)
                 {
-                    if (game.ExistsBacteria(i, j))
+                    if (game.ExistsBacteria(i, j, game.Terraria))
                     {
                         e.Graphics.FillEllipse(solidBrush, i * width + leftBorder, j * height, width, height);
                         pictureBox1.Image = bmp;

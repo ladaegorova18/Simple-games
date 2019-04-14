@@ -31,20 +31,18 @@
             this.SuspendLayout();
             // 
             // Form2
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 544);
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "StableCells";
             this.Load += new System.EventHandler(this.Form2Load);
-            //this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2Paint);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2Paint);
             this.ResumeLayout(false);
-
         }
-
         #endregion
     }
 }

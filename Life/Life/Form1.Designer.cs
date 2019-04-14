@@ -96,7 +96,7 @@
             // 
             this.stepText.AutoSize = true;
             this.stepText.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.stepText.Location = new System.Drawing.Point(27, 507);
+            this.stepText.Location = new System.Drawing.Point(-2, 507);
             this.stepText.Name = "stepText";
             this.stepText.Size = new System.Drawing.Size(48, 21);
             this.stepText.TabIndex = 3;
@@ -106,7 +106,7 @@
             // 
             this.stepsCount.AutoSize = true;
             this.stepsCount.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.stepsCount.Location = new System.Drawing.Point(93, 507);
+            this.stepsCount.Location = new System.Drawing.Point(68, 507);
             this.stepsCount.Name = "stepsCount";
             this.stepsCount.Size = new System.Drawing.Size(19, 21);
             this.stepsCount.TabIndex = 4;
@@ -116,7 +116,7 @@
             // 
             this.timeText.AutoSize = true;
             this.timeText.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.timeText.Location = new System.Drawing.Point(24, 486);
+            this.timeText.Location = new System.Drawing.Point(-2, 486);
             this.timeText.Name = "timeText";
             this.timeText.Size = new System.Drawing.Size(51, 21);
             this.timeText.TabIndex = 6;
@@ -126,7 +126,7 @@
             // 
             this.time.AutoSize = true;
             this.time.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.time.Location = new System.Drawing.Point(93, 486);
+            this.time.Location = new System.Drawing.Point(68, 486);
             this.time.Name = "time";
             this.time.Size = new System.Drawing.Size(19, 21);
             this.time.TabIndex = 7;
@@ -136,7 +136,7 @@
             // 
             this.cellsText.AutoSize = true;
             this.cellsText.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cellsText.Location = new System.Drawing.Point(26, 465);
+            this.cellsText.Location = new System.Drawing.Point(0, 465);
             this.cellsText.Name = "cellsText";
             this.cellsText.Size = new System.Drawing.Size(49, 21);
             this.cellsText.TabIndex = 8;
@@ -146,7 +146,7 @@
             // 
             this.cellsCount.AutoSize = true;
             this.cellsCount.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cellsCount.Location = new System.Drawing.Point(93, 465);
+            this.cellsCount.Location = new System.Drawing.Point(68, 465);
             this.cellsCount.Name = "cellsCount";
             this.cellsCount.Size = new System.Drawing.Size(19, 21);
             this.cellsCount.TabIndex = 9;

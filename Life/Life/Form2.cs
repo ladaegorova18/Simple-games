@@ -39,26 +39,43 @@ namespace Life
             UpdateStyles();
         }
 
-        private void Form2Paint(object sender, PaintEventArgs e)
+        private void DrawCells(PaintEventArgs e, int leftBorder, SolidBrush solidBrush)
         {
-            var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2;
-            var solidBrush = new SolidBrush(Color.OliveDrab);
-            var whiteBrush = new SolidBrush(Color.Ivory);
+            var stableTerraria = game.FindStableCells();
             for (var i = 0; i < game.Size; ++i) // ага, и здесь можно лучше
             {
                 for (var j = 0; j < game.Size; ++j)
                 {
-                    if (game.FindStableCells()[i, j] == 1)
+                    if (stableTerraria[i, j] == 1)
                     {
                         e.Graphics.FillEllipse(solidBrush, i * width + leftBorder, j * height, width, height);
                         pictureBox1.Image = bmp;
                     }
-                    else if (game.FindStableCells()[i, j] == -1)
-                    {
-                        e.Graphics.FillEllipse(whiteBrush, i * width + leftBorder, j * height, width, height);
-                    }
                 }
-                pictureBox1.Image = bmp; // а он не создается много раз?
+            }
+        }
+
+        private void Form2Paint(object sender, PaintEventArgs e)
+        {
+            var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2;
+            var solidBrush = new SolidBrush(Color.OliveDrab);
+            DrawCells(e, leftBorder, solidBrush);
+            DrawGrid(leftBorder, leftBorder + game.Size * width, height * game.Size, e);
+        }
+
+        private void DrawGrid(int leftBorder, int rightBorder, int gameHeight, PaintEventArgs e)
+        {
+            for (var i = 0; i <= gameHeight; i += height)
+            {
+                var point1 = new PointF(leftBorder, i);
+                var point2 = new PointF(rightBorder, i);
+                e.Graphics.DrawLine(pen, point1, point2);
+            }
+            for (var j = leftBorder; j <= rightBorder; j += width)
+            {
+                var point1 = new PointF(j, 0);
+                var point2 = new PointF(j, gameHeight);
+                e.Graphics.DrawLine(pen, point1, point2);
             }
         }
     }
