@@ -42,7 +42,6 @@ namespace Life
         public void Step()
         {
             var tempTerraria = CopyTerraria();
-            oldTerraria = CopyTerraria();
             tempTerraria = MakeOneStep(tempTerraria);
             Terraria = tempTerraria;
             ++Steps;
@@ -63,7 +62,7 @@ namespace Life
                     }
                     else if (CheckNeighboursForEmptyCell(i, j))
                     {
-                        BornBacteria(i, j, tempTerraria); //может, не нужно столько функций
+                        BornBacteria(i, j, tempTerraria);
                     }
                 }
             }
@@ -157,12 +156,14 @@ namespace Life
         public int[,] FindStableCells()
         {
             var stableTerraria = new int[Size, Size];
-            var fiveStepTerraria = FiveStepsForvardTerraria();
+            var oneStepTerraria = CopyTerraria();
+            oneStepTerraria = MakeOneStep(oneStepTerraria);
+            var fiveStepTerraria = FourStepsTerraria();
             for (var i = 0; i < Size; ++i)
             {
                 for (var j = 0; j < Size; ++j)
                 {
-                    if (Terraria[i, j] == fiveStepTerraria[i, j] && ExistsBacteria(i, j, Terraria))
+                    if (ExistsBacteria(i, j, Terraria) && Terraria[i, j] == fiveStepTerraria[i, j] && ExistsBacteria(i, j, oneStepTerraria))
                     {
                         if (IsPattern(i, j, fiveStepTerraria))
                         {
@@ -171,42 +172,108 @@ namespace Life
                     }
                 }
             }
-            //for (var i = 0; i < Size; ++i)
-            //{
-            //    for (var j = 0; j < Size; ++j)
-            //    {
-            //        if (ExistsBacteria(i, j))
-            //        {
-            //            if (IsPattern(i, j, fiveStepForvardTerraria))
-            //            {
-            //                stableTerraria[i, j] = 1;
-            //            }
-            //        }
-            //        //else if (IsStableEmpty(i, j))
-            //        //{
-            //        //    stableTerraria[i, j] = 0;
-            //        //}
-            //        //else
-            //        //{
-            //        //    stableTerraria[i, j] = -1;
-            //        //}
-            //    }
-            //}
+            stableTerraria = RemoveLonelyCells(stableTerraria);
+            stableTerraria = IsFlasher(stableTerraria);
             return stableTerraria;
         }
 
-        private bool IsStableEmpty(int i, int j)
+        private int[,] RemoveLonelyCells(int [,] stableTerraria)
         {
-            return true;
+            for (var i = 0; i < Size; ++i)
+            {
+                for (var j = 0; j < Size; ++j)
+                {
+                    if (ExistsBacteria(i, j, Terraria) && CountFourStepsTerraria(i, j, stableTerraria) == 0)
+                    {
+                        stableTerraria[i, j] = 0;
+                    }
+                }
+            }
+            return stableTerraria;
         }
 
         private bool IsPattern(int i, int j, int[,] fiveStepsForvardTerraria) => IsSquare(i, j, fiveStepsForvardTerraria);
 
+        private int[,] IsFlasher(int[,] stableTerraria)
+        {
+            var fiveTerr = FourStepsTerraria();
+            var isFlasher = true;
+            for (var i = 0; i < Size; ++i)
+            {
+                for (var j = 0; j < Size; ++j)
+                {
+                    if (CountNeighbours(i, j) == 2)
+                    {
+                        for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
+                        {
+                            for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
+                            {
+                                if (currentRow == i && currentColumn == j)
+                                {
+                                    continue;
+                                }
+                                if (ExistsBacteria(currentRow, currentColumn, Terraria) && CountNeighbours(currentRow, currentColumn) != 1)
+                                {
+                                    isFlasher = false;
+                                }
+                            }
+                        }
+                        if (ExistsBacteria(i, j, fiveTerr))
+                        {
+                            var counter = 0;
+                            for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
+                            {
+                                for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
+                                {
+                                    if (currentRow == i && currentColumn == j)
+                                    {
+                                        continue;
+                                    }
+                                    if (ExistsBacteria(currentRow, currentColumn, Terraria) && CountNeighbours(currentRow, currentColumn) != 1)
+                                    {
+                                        ++counter;
+                                    }
+                                }
+                            }
+                            if (counter != 2)
+                            {
+                                isFlasher = false;
+                            }
+                        }
+                        else
+                        {
+                            isFlasher = false;
+                        }
+                    }
+                    if (isFlasher)
+                    {
+                        stableTerraria[i, j] = 1;
+                        for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
+                        {
+                            for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
+                            {
+                                if (currentRow == i && currentColumn == j)
+                                {
+                                    continue;
+                                }
+                                if (ExistsBacteria(currentRow, currentColumn, Terraria) && (!OnTheEdge(currentRow, currentColumn)))
+                                {
+                                    stableTerraria[currentRow, currentColumn] = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return stableTerraria;
+        }
+
         private bool IsSquare(int i, int j, int[,] fiveStepsForvardTerraria)
         {
-            if (CountNeighbours(i, j) == 3)
+            var neighbours = CountNeighbours(i, j);
+            if (neighbours == 3)
             {
-                if (StableNeighbours(i, j, fiveStepsForvardTerraria))
+                if (StableNeighbours(i, j, fiveStepsForvardTerraria, neighbours))
                 {
                     return true;
                 }
@@ -214,7 +281,7 @@ namespace Life
             return false;
         }
 
-        private bool StableNeighbours(int i, int j, int[,] fiveStepsForvardTerraria)
+        private bool StableNeighbours(int i, int j, int[,] fiveStepsForvardTerraria, int neighbours)
         {
             for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
             {
@@ -224,7 +291,7 @@ namespace Life
                     {
                         continue;
                     }
-                    if (CountNeighbours(currentRow, currentColumn) == 3 && (ExistsBacteria(currentRow, currentColumn, Terraria)))
+                    if (ExistsBacteria(currentRow, currentColumn, Terraria))
                     {
                         if (!ExistsBacteria(currentRow, currentColumn, fiveStepsForvardTerraria))
                         {
@@ -233,17 +300,60 @@ namespace Life
                     }
                 }
             }
+            if (CountFourStepsTerraria(i, j, fiveStepsForvardTerraria) != neighbours)
+            {
+                return false;
+            }
             return true;
         }
 
-        private int[,] FiveStepsForvardTerraria()
+        private int[,] FourStepsTerraria()
         {
             var tempTerraria = CopyTerraria();
-            for (var i = 0; i < 5; ++i)
+            for (var i = 0; i < 4; ++i)
             {
                 tempTerraria = MakeOneStep(tempTerraria);
             }
             return tempTerraria;
+        }
+
+        private int CountFourStepsTerraria(int i, int j, int[,] terraria)
+        {
+            var counter = 0;
+            for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
+            {
+                for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
+                {
+                    if (currentRow == i && currentColumn == j)
+                    {
+                        continue;
+                    }
+                    if (ExistsBacteria(currentRow, currentColumn, terraria))
+                    {
+                        ++counter;
+                    }
+                }
+            }
+            return counter;
+        }
+
+        private (int, int) FindNeighbour(int i, int j, int[,] terraria)
+        {
+            for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
+            {
+                for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
+                {
+                    if (currentRow == i && currentColumn == j)
+                    {
+                        continue;
+                    }
+                    if (ExistsBacteria(currentRow, currentColumn, terraria))
+                    {
+                        return (currentRow, currentColumn);
+                    }
+                }
+            }
+            return (0, 0);
         }
     } 
 }
