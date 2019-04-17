@@ -14,32 +14,38 @@ namespace Life
     public partial class Form1 : Form
     {
         private Game game;
-        private Bitmap bmp;
-        private Graphics g;
-        private PictureBox pictureBox1;
+        private Bitmap bmp1;
+        private Bitmap bmp2;
+        private Graphics g1;
+        private Graphics g2;
         private int width = 12;
         private int height = 10;
         private Pen pen;
         private Color oldColor;
+        private PictureBox pictureBox1;
         private Stopwatch stopwatch = new Stopwatch();
-        private Form2 form2;
 
         public Form1()
         {
-            game = new Game(); // спросить бы пользователя, какой размер поля ему нужен
             pictureBox1 = new PictureBox();
             pictureBox1.Width = 800;
             pictureBox1.Height = 580 - 30;
-            bmp = new Bitmap(pictureBox1.Height, pictureBox1.Width);
+            bmp1 = new Bitmap(pictureBox1.Height, pictureBox1.Width);
+            pictureBox2 = new PictureBox();
+            pictureBox2.Width = 800;
+            pictureBox2.Height = 580 - 30;
+            bmp2 = new Bitmap(pictureBox2.Height, pictureBox2.Width);
             pen = new Pen(Color.Black);
-            g = Graphics.FromImage(bmp);
+            g1 = Graphics.FromImage(bmp1);
+            g2 = Graphics.FromImage(bmp2);
+            game = new Game();
             InitializeComponent();
-            form2 = new Form2(game);
-            form2.Show();
         } // что-то с лейаутами, считать время
 
         private void StartClick(object sender, EventArgs e)
         {
+            // спросить бы пользователя, какой размер поля ему нужен
+            game.Limit = int.Parse(cellsCountText.Text);
             timer.Enabled = true;
             stopwatch.Start();
         }
@@ -48,7 +54,6 @@ namespace Life
         {
             game.Step();
             Refresh();
-            form2.Refresh();
         }
 
         private void DrawGrid(int leftBorder, int rightBorder, int gameHeight, PaintEventArgs e)
@@ -71,11 +76,15 @@ namespace Life
         {
             var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2;
             var solidBrush = new SolidBrush(Color.OliveDrab);
-            DrawCells(e, leftBorder, solidBrush);
-            DrawGrid(leftBorder, leftBorder + game.Size * width, height * game.Size, e);
+            var terraria = game.Terraria;
+            DrawCells(e, leftBorder, solidBrush, terraria);
+            if (gridCheckBox.Checked)
+            {
+                DrawGrid(leftBorder, leftBorder + game.Size * width, height * game.Size, e);
+            }
             stepsCount.Text = game.Steps.ToString();
             WriteTime();
-            cellsCount.Text = game.CountCells().ToString();
+            cellsCountText.Text = game.CountCells().ToString();
         }
 
         private void WriteTime()
@@ -84,16 +93,16 @@ namespace Life
             time.Text = (currentTime).Substring(0, currentTime.Length - 6);
         }
 
-        private void DrawCells(PaintEventArgs e, int leftBorder, SolidBrush solidBrush)
+        private void DrawCells(PaintEventArgs e, int leftBorder, SolidBrush solidBrush, int[,] terraria)
         {
             for (var i = 0; i < game.Size; ++i) // ага, и здесь можно лучше
             {
                 for (var j = 0; j < game.Size; ++j)
                 {
-                    if (game.ExistsBacteria(i, j, game.Terraria))
+                    if (game.ExistsBacteria(i, j, terraria))
                     {
                         e.Graphics.FillEllipse(solidBrush, i * width + leftBorder, j * height, width, height);
-                        pictureBox1.Image = bmp;
+                        pictureBox1.Image = bmp1;
                     }
                 }
             }
@@ -111,7 +120,11 @@ namespace Life
             stopwatch.Stop();
         }
 
-        private void OnExitClick(object sender, EventArgs e) => Close();
+        private void OnRestartClick(object sender, EventArgs e)
+        {
+            stopwatch.Restart();
+            game = new Game();
+        }
 
         private void OnStartMouseEnter(object sender, EventArgs e) => OnMouseEnter(start);
 
@@ -121,9 +134,9 @@ namespace Life
 
         private void OnStopButtonMouseLeave(object sender, EventArgs e) => OnMouseLeave(stop);
 
-        private void OnExitButtonMouseEnter(object sender, EventArgs e) => OnMouseEnter(exit);
+        private void OnExitButtonMouseEnter(object sender, EventArgs e) => OnMouseEnter(restart);
 
-        private void OnExitMouseLeave(object sender, EventArgs e) => OnMouseLeave(exit);
+        private void OnExitMouseLeave(object sender, EventArgs e) => OnMouseLeave(restart);
 
         private void OnMouseEnter(Button button)
         {
@@ -132,6 +145,33 @@ namespace Life
         }
 
         private void OnMouseLeave(Button button) => button.BackColor = oldColor;
+
+        private void PictureBox2Paint(object sender, PaintEventArgs e)
+        {
+            var leftBorder = pictureBox2.Width / 2 - game.Size * width / 2;
+            var solidBrush = new SolidBrush(Color.RosyBrown);
+            var terraria = game.FindStableCells();
+            DrawCells(e, leftBorder, solidBrush, terraria);
+            if (gridCheckBox.Checked)
+            {
+                DrawGrid(leftBorder, leftBorder + game.Size * width, height * game.Size, e);
+            }
+        }
+
+        private void CellsCountTextValidating(object sender, CancelEventArgs e)
+        {
+            if (int.TryParse(cellsCountText.Text, out int result))
+            {
+                if (result < 0 || result > game.Size * game.Size)
+                {
+                    e.Cancel = false;
+                }
+            }
+            else
+            {
+                e.Cancel = false;
+            }
+        }
     }
 }
 
