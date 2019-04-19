@@ -75,16 +75,27 @@ namespace Life
         private void Form1Paint(object sender, PaintEventArgs e)
         {
             var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2 - 50;
-            var solidBrush = new SolidBrush(Color.Green);
             var terraria = game.Terraria;
+            PaintField(Color.Green, terraria, leftBorder, e);
+            stepsCount.Text = game.Steps.ToString();
+            WriteTime();
+            cellsCountText.Text = game.CountCells().ToString();
+        }
+
+        private void PictureBox2Paint(object sender, PaintEventArgs e)
+        {
+            var terraria = game.FindStableCells();
+            PaintField(Color.Brown, terraria, 0, e);
+        }
+
+        private void PaintField(Color color, int[,] terraria, int leftBorder, PaintEventArgs e)
+        {
+            var solidBrush = new SolidBrush(color);
             DrawCells(e, leftBorder, solidBrush, terraria);
             if (gridCheckBox.Checked)
             {
                 DrawGrid(leftBorder, leftBorder + game.Size * width, height * game.Size, e);
             }
-            stepsCount.Text = game.Steps.ToString();
-            WriteTime();
-            cellsCountText.Text = game.CountCells().ToString();
         }
 
         private void WriteTime()
@@ -95,17 +106,17 @@ namespace Life
 
         private void DrawCells(PaintEventArgs e, int leftBorder, SolidBrush solidBrush, int[,] terraria)
         {
-            for (var i = 0; i < game.Size; ++i) // ага, и здесь можно лучше
+            for (var i = 0; i < game.Size; ++i)
             {
                 for (var j = 0; j < game.Size; ++j)
                 {
                     if (game.ExistsBacteria(i, j, terraria))
                     {
                         e.Graphics.FillEllipse(solidBrush, i * width + leftBorder, j * height, width, height);
-                        pictureBox1.Image = bmp1;
                     }
                 }
             }
+            pictureBox1.Image = bmp1;
         }
 
         private void Form1Load(object sender, EventArgs e)
@@ -124,6 +135,7 @@ namespace Life
         {
             stopwatch.Restart();
             game = new Game();
+            timer.Enabled = true;
         }
 
         private void OnStartMouseEnter(object sender, EventArgs e) => OnMouseEnter(start);
@@ -145,18 +157,6 @@ namespace Life
         }
 
         private void OnMouseLeave(Button button) => button.BackColor = oldColor;
-
-        private void PictureBox2Paint(object sender, PaintEventArgs e)
-        {
-            var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2;
-            var solidBrush = new SolidBrush(Color.Brown);
-            var terraria = game.FindStableCells();
-            DrawCells(e, 0, solidBrush, terraria);
-            if (gridCheckBox.Checked)
-            {
-                DrawGrid(0, game.Size * width, height * game.Size, e);
-            }
-        }
     }
 }
 

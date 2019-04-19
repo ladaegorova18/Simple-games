@@ -134,7 +134,7 @@ namespace Life
             }
             if (j < 0)
             {
-                j += j;
+                j += Size;
             }
             else if (j >= Size)
             {
