@@ -50,7 +50,7 @@
             this.start.BackColor = System.Drawing.Color.SeaGreen;
             this.start.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.start.ForeColor = System.Drawing.Color.Cornsilk;
-            this.start.Location = new System.Drawing.Point(541, 498);
+            this.start.Location = new System.Drawing.Point(674, 219);
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(66, 34);
             this.start.TabIndex = 0;
@@ -70,7 +70,7 @@
             this.stop.BackColor = System.Drawing.Color.SeaGreen;
             this.stop.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.stop.ForeColor = System.Drawing.Color.Cornsilk;
-            this.stop.Location = new System.Drawing.Point(421, 498);
+            this.stop.Location = new System.Drawing.Point(673, 273);
             this.stop.Name = "stop";
             this.stop.Size = new System.Drawing.Size(67, 34);
             this.stop.TabIndex = 1;
@@ -85,9 +85,9 @@
             this.restart.BackColor = System.Drawing.Color.SeaGreen;
             this.restart.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.restart.ForeColor = System.Drawing.Color.Cornsilk;
-            this.restart.Location = new System.Drawing.Point(657, 498);
+            this.restart.Location = new System.Drawing.Point(673, 327);
             this.restart.Name = "restart";
-            this.restart.Size = new System.Drawing.Size(57, 34);
+            this.restart.Size = new System.Drawing.Size(66, 34);
             this.restart.TabIndex = 2;
             this.restart.Text = "restart";
             this.restart.UseVisualStyleBackColor = false;
@@ -99,7 +99,7 @@
             // 
             this.stepText.AutoSize = true;
             this.stepText.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.stepText.Location = new System.Drawing.Point(12, 99);
+            this.stepText.Location = new System.Drawing.Point(228, 502);
             this.stepText.Name = "stepText";
             this.stepText.Size = new System.Drawing.Size(40, 19);
             this.stepText.TabIndex = 3;
@@ -109,7 +109,7 @@
             // 
             this.stepsCount.AutoSize = true;
             this.stepsCount.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.stepsCount.Location = new System.Drawing.Point(66, 99);
+            this.stepsCount.Location = new System.Drawing.Point(282, 502);
             this.stepsCount.Name = "stepsCount";
             this.stepsCount.Size = new System.Drawing.Size(17, 19);
             this.stepsCount.TabIndex = 4;
@@ -119,7 +119,7 @@
             // 
             this.timeText.AutoSize = true;
             this.timeText.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.timeText.Location = new System.Drawing.Point(11, 124);
+            this.timeText.Location = new System.Drawing.Point(398, 502);
             this.timeText.Name = "timeText";
             this.timeText.Size = new System.Drawing.Size(41, 19);
             this.timeText.TabIndex = 6;
@@ -129,7 +129,7 @@
             // 
             this.time.AutoSize = true;
             this.time.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.time.Location = new System.Drawing.Point(66, 124);
+            this.time.Location = new System.Drawing.Point(453, 502);
             this.time.Name = "time";
             this.time.Size = new System.Drawing.Size(17, 19);
             this.time.TabIndex = 7;
@@ -139,7 +139,7 @@
             // 
             this.cellsText.AutoSize = true;
             this.cellsText.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cellsText.Location = new System.Drawing.Point(113, 505);
+            this.cellsText.Location = new System.Drawing.Point(572, 502);
             this.cellsText.Name = "cellsText";
             this.cellsText.Size = new System.Drawing.Size(40, 19);
             this.cellsText.TabIndex = 8;
@@ -147,9 +147,11 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(830, 1);
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox2.Location = new System.Drawing.Point(747, 2);
+            this.pictureBox2.MinimumSize = new System.Drawing.Size(658, 492);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(644, 500);
+            this.pictureBox2.Size = new System.Drawing.Size(658, 507);
             this.pictureBox2.TabIndex = 10;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBox2Paint);
@@ -159,7 +161,7 @@
             this.gridCheckBox.AutoSize = true;
             this.gridCheckBox.Checked = true;
             this.gridCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gridCheckBox.Location = new System.Drawing.Point(1078, 512);
+            this.gridCheckBox.Location = new System.Drawing.Point(674, 394);
             this.gridCheckBox.Name = "gridCheckBox";
             this.gridCheckBox.Size = new System.Drawing.Size(69, 17);
             this.gridCheckBox.TabIndex = 11;
@@ -169,13 +171,12 @@
             // cellsCountText
             // 
             this.cellsCountText.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cellsCountText.Location = new System.Drawing.Point(180, 506);
+            this.cellsCountText.Location = new System.Drawing.Point(641, 499);
             this.cellsCountText.Name = "cellsCountText";
             this.cellsCountText.Size = new System.Drawing.Size(100, 25);
             this.cellsCountText.TabIndex = 12;
             this.cellsCountText.Text = "600";
             this.cellsCountText.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cellsCountText.Validating += new System.ComponentModel.CancelEventHandler(this.CellsCountTextValidating);
             // 
             // Form1
             // 
@@ -185,7 +186,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.LightGreen;
-            this.ClientSize = new System.Drawing.Size(1507, 544);
+            this.ClientSize = new System.Drawing.Size(1437, 544);
             this.Controls.Add(this.gridCheckBox);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.cellsCountText);
@@ -198,7 +199,7 @@
             this.Controls.Add(this.stop);
             this.Controls.Add(this.start);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(800, 580);
+            this.MinimumSize = new System.Drawing.Size(658, 492);
             this.Name = "Form1";
             this.Text = "Life";
             this.Load += new System.EventHandler(this.Form1Load);

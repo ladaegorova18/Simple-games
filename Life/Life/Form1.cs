@@ -74,8 +74,8 @@ namespace Life
 
         private void Form1Paint(object sender, PaintEventArgs e)
         {
-            var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2;
-            var solidBrush = new SolidBrush(Color.OliveDrab);
+            var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2 - 50;
+            var solidBrush = new SolidBrush(Color.Green);
             var terraria = game.Terraria;
             DrawCells(e, leftBorder, solidBrush, terraria);
             if (gridCheckBox.Checked)
@@ -148,28 +148,13 @@ namespace Life
 
         private void PictureBox2Paint(object sender, PaintEventArgs e)
         {
-            var leftBorder = pictureBox2.Width / 2 - game.Size * width / 2;
-            var solidBrush = new SolidBrush(Color.RosyBrown);
+            var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2;
+            var solidBrush = new SolidBrush(Color.Brown);
             var terraria = game.FindStableCells();
-            DrawCells(e, leftBorder, solidBrush, terraria);
+            DrawCells(e, 0, solidBrush, terraria);
             if (gridCheckBox.Checked)
             {
-                DrawGrid(leftBorder, leftBorder + game.Size * width, height * game.Size, e);
-            }
-        }
-
-        private void CellsCountTextValidating(object sender, CancelEventArgs e)
-        {
-            if (int.TryParse(cellsCountText.Text, out int result))
-            {
-                if (result < 0 || result > game.Size * game.Size)
-                {
-                    e.Cancel = false;
-                }
-            }
-            else
-            {
-                e.Cancel = false;
+                DrawGrid(0, game.Size * width, height * game.Size, e);
             }
         }
     }

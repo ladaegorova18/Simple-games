@@ -7,14 +7,30 @@ using System.Threading.Tasks;
 
 namespace Life
 {
+    /// <summary>
+    /// Game class: main logic of Life game
+    /// </summary>
     public class Game
     {
+        /// <summary>
+        /// Terraria: two-dimensional array of "bacteria"
+        /// </summary>
         public int[,] Terraria { get; set; }
-        public int Size { get; set; } = 50;
 
+        /// <summary>
+        /// Size of terraria
+        /// </summary>
+        public int Size { get; private set; } = 50;
+
+        /// <summary>
+        /// Maximal count of bacteria
+        /// </summary>
         public int Limit { get; set; } = 400;
 
-        public int Steps { get; set; } = 0;
+        /// <summary>
+        /// Count of game steps
+        /// </summary>
+        public int Steps { get; private set; } = 0;
 
         /// <summary>
         /// Game constructor creates the array and randomly fills it by alive cells 
@@ -33,11 +49,6 @@ namespace Life
                     j = rnd.Next(0, Size);
                 }
                 BornBacteria(i, j, Terraria);
-                //var isBacteria = rnd.Next(0, 2);
-                //if (isBacteria == 1)
-                //{
-
-                //}
             }
         }
 
@@ -111,11 +122,11 @@ namespace Life
             return counter;
         }
 
-        private (int, int) OnTheEdge(int i, int j)/* => i < 0 || j < 0 || i >= Size || j >= Size;*/
+        private (int, int) OnTheEdge(int i, int j)
         {
             if (i < 0)
             {
-                i = Size + i;
+                i += Size;
             }
             else if (i >= Size)
             {
@@ -123,7 +134,7 @@ namespace Life
             }
             if (j < 0)
             {
-                j = Size + j;
+                j += j;
             }
             else if (j >= Size)
             {
@@ -136,7 +147,7 @@ namespace Life
         public bool ExistsBacteria(int i, int j, int[,] terraria)
         {
             (i, j) = OnTheEdge(i, j);
-            return terraria[i, j] == 1; // тут можно лучше
+            return terraria[i, j] == 1;
         }
 
         private void KillBacteria(int i, int j, int[,] terraria) => terraria[i, j] = 0;
@@ -150,15 +161,19 @@ namespace Life
             {
                 for (var j = 0; j < Size; ++j)
                 {
-                    if (Terraria[i, j] == 1)
+                    if (ExistsBacteria(i, j, Terraria))
                     {
                         ++count;
                     }
                 }
             }
-            return count; // что-то здесь private, а что-то public
+            return count;
         }
 
+        /// <summary>
+        /// Tryes to find patterns in terraria
+        /// </summary>
+        /// <returns> Terraria with patterns </returns>
         public int[,] FindStableCells()
         {
             var stableTerraria = new int[Size, Size];
@@ -169,7 +184,7 @@ namespace Life
                 {
                     if (ExistsBacteria(i, j, Terraria) && Terraria[i, j] == fourStepTerraria[i, j])
                     {
-                        if (CountNeighbours(i, j) == 2 && CountFourStepsTerraria(i, j, fourStepTerraria) == 2 && !StableNeighbours(i, j, fourStepTerraria))
+                        if (CountNeighbours(i, j) == 2 && NeighboursInFourStepsTerraria(i, j, fourStepTerraria) == 2 && !StableNeighbours(i, j, fourStepTerraria))
                         {
                             stableTerraria = FindFlashers(stableTerraria, i, j);
                         }
@@ -205,34 +220,29 @@ namespace Life
             return stableTerraria;
         }
 
-        private int[,] FindFlashers2(int[,] stableTerraria, int i, int j)
+        private bool Flasher(int[,] stableTerraria, int i, int j)
         {
-            var oneStep = MakeOneStep(stableTerraria);
-            var twoSteps = MakeOneStep(oneStep);
-            var flasher = false;
-            for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
+            var fourStep = FourStepsTerraria();
+            if (CountNeighbours(i, j) == 2 && NeighboursInFourStepsTerraria(i, j, fourStep) == 2 && !StableNeighbours(i, j, fourStep))
             {
-                for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
+                for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
                 {
-                    if (currentRow == i && currentColumn == j)
+                    for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
                     {
-                        continue;
-                    }
-                    var (currentR, currentC) = OnTheEdge(currentRow, currentColumn);
-                    if (ExistsBacteria(currentR, currentC, stableTerraria))
-                    {
-                        if (!ExistsBacteria(currentR, currentC, oneStep) && ExistsBacteria(currentR, currentC, twoSteps))
+                        if (currentRow == i && currentColumn == j)
                         {
-                            flasher = true;
+                            continue;
                         }
-                        else
+                        var (currentR, currentC) = OnTheEdge(currentRow, currentColumn);
+                        if (CountNeighbours(currentR, currentC) == 1 && ExistsBacteria(currentR, currentC, Terraria))
                         {
-                            flasher = false;
+                            return true;
                         }
                     }
                 }
+                return true;
             }
-            return stableTerraria;
+            return false;
         }
 
         private bool StableNeighbours(int i, int j, int[,] terraria)
@@ -266,28 +276,7 @@ namespace Life
             {
                 for (var j = 0; j < Size; ++j)
                 {
-                    if (ExistsBacteria(i, j, terraria))
-                    {
-                        if (CountFourStepsTerraria(i, j, terraria) == 1)
-                        {
-                            for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
-                            {
-                                for (var currentColumn = j - 1; currentColumn <= j + 1; ++currentColumn)
-                                {
-                                    if (currentRow == i && currentColumn == j)
-                                    {
-                                        continue;
-                                    }
-                                    var (currentR, currentC) = OnTheEdge(currentRow, currentColumn);
-                                    if (CountFourStepsTerraria(currentR, currentC, fourSteps) == 1 && ExistsBacteria(currentR, currentC, fourSteps))
-                                    {
-                                        terraria[i, j] = 0;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else if (CountFourStepsTerraria(i, j, terraria) == 0)
+                    if (ExistsBacteria(i, j, terraria) && !Flasher(terraria, i, j) && CountNeighbours(i, j) <= 1)
                     {
                         terraria[i, j] = 0;
                     }
@@ -306,7 +295,7 @@ namespace Life
             return tempTerraria;
         }
 
-        private int CountFourStepsTerraria(int i, int j, int[,] terraria)
+        private int NeighboursInFourStepsTerraria(int i, int j, int[,] terraria)
         {
             var counter = 0;
             for (var currentRow = i - 1; currentRow <= i + 1; ++currentRow)
@@ -317,8 +306,8 @@ namespace Life
                     {
                         continue;
                     }
-                    var (currentR, currentC) = OnTheEdge(currentRow, currentColumn);
-                    if (ExistsBacteria(currentR, currentC, terraria))
+                    var (correctRow, correctColumn) = OnTheEdge(currentRow, currentColumn);
+                    if (ExistsBacteria(correctRow, correctColumn, terraria))
                     {
                         ++counter;
                     }
