@@ -55,14 +55,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\door.cs" />
+     <Compile Include="Assets\Scripts\Checkpoint.cs" />
      <Compile Include="Assets\Scripts\Coins.cs" />
-     <Compile Include="Assets\Scripts\dieScript.cs" />
-     <Compile Include="Assets\Scripts\Enemy.cs" />
-     <Compile Include="Assets\Scripts\Hero.cs" />
+     <Compile Include="Assets\Scripts\DoorScript.cs" />
      <Compile Include="Assets\Scripts\HeroController.cs" />
+     <Compile Include="Assets\Scripts\key.cs" />
+     <Compile Include="Assets\Scripts\LevelMenu.cs" />
      <Compile Include="Assets\Scripts\MainCamera.cs" />
-     <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
-     <None Include="Assets\Textures\Knight-Characters-Free-Sprite\README.txt" />
+     <Compile Include="Assets\Scripts\Menu.cs" />
+     <Compile Include="Assets\Scripts\MoveScript.cs" />
+     <Compile Include="Assets\Scripts\shootingEnemy.cs" />
+     <Compile Include="Assets\Scripts\ShotScript.cs" />
+     <Compile Include="Assets\Scripts\walkingEnemy.cs" />
+     <Compile Include="Assets\Scripts\WeaponScript.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Users/Home/Documents/Repositories/Games/2DPlatformer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
