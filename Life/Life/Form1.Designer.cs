@@ -39,10 +39,7 @@
             this.timeText = new System.Windows.Forms.Label();
             this.time = new System.Windows.Forms.Label();
             this.cellsText = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.gridCheckBox = new System.Windows.Forms.CheckBox();
-            this.cellsCountText = new System.Windows.Forms.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.cellsCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // start
@@ -50,7 +47,7 @@
             this.start.BackColor = System.Drawing.Color.SeaGreen;
             this.start.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.start.ForeColor = System.Drawing.Color.Cornsilk;
-            this.start.Location = new System.Drawing.Point(666, 220);
+            this.start.Location = new System.Drawing.Point(384, 501);
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(66, 34);
             this.start.TabIndex = 0;
@@ -63,6 +60,7 @@
             // timer
             // 
             this.timer.Interval = 500;
+            this.timer.Interval = 500;
             this.timer.Tick += new System.EventHandler(this.Timer1Tick);
             // 
             // stop
@@ -70,7 +68,7 @@
             this.stop.BackColor = System.Drawing.Color.SeaGreen;
             this.stop.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.stop.ForeColor = System.Drawing.Color.Cornsilk;
-            this.stop.Location = new System.Drawing.Point(665, 274);
+            this.stop.Location = new System.Drawing.Point(207, 501);
             this.stop.Name = "stop";
             this.stop.Size = new System.Drawing.Size(67, 34);
             this.stop.TabIndex = 1;
@@ -79,21 +77,23 @@
             this.stop.Click += new System.EventHandler(this.OnStopClick);
             this.stop.MouseEnter += new System.EventHandler(this.OnStopButtonMouseEnter);
             this.stop.MouseLeave += new System.EventHandler(this.OnStopButtonMouseLeave);
+            this.stop.MouseEnter += new System.EventHandler(this.OnStopButtonMouseEnter);
+            this.stop.MouseLeave += new System.EventHandler(this.OnStopButtonMouseLeave);
             // 
             // restart
             // 
-            this.restart.BackColor = System.Drawing.Color.SeaGreen;
-            this.restart.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.restart.ForeColor = System.Drawing.Color.Cornsilk;
-            this.restart.Location = new System.Drawing.Point(665, 328);
-            this.restart.Name = "restart";
-            this.restart.Size = new System.Drawing.Size(66, 34);
-            this.restart.TabIndex = 2;
-            this.restart.Text = "restart";
-            this.restart.UseVisualStyleBackColor = false;
-            this.restart.Click += new System.EventHandler(this.OnRestartClick);
-            this.restart.MouseEnter += new System.EventHandler(this.OnExitButtonMouseEnter);
-            this.restart.MouseLeave += new System.EventHandler(this.OnExitMouseLeave);
+            this.exit.BackColor = System.Drawing.Color.SeaGreen;
+            this.exit.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.exit.ForeColor = System.Drawing.Color.Cornsilk;
+            this.exit.Location = new System.Drawing.Point(563, 501);
+            this.exit.Name = "exit";
+            this.exit.Size = new System.Drawing.Size(75, 36);
+            this.exit.TabIndex = 2;
+            this.exit.Text = "exit";
+            this.exit.UseVisualStyleBackColor = false;
+            this.exit.Click += new System.EventHandler(this.OnExitClick);
+            this.exit.MouseEnter += new System.EventHandler(this.OnExitButtonMouseEnter);
+            this.exit.MouseLeave += new System.EventHandler(this.OnExitMouseLeave);
             // 
             // stepText
             // 
@@ -116,66 +116,45 @@
             this.stepsCount.Text = "0";
             // 
             // timeText
+            // timeText
             // 
             this.timeText.AutoSize = true;
-            this.timeText.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.timeText.Location = new System.Drawing.Point(398, 513);
+            this.timeText.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.timeText.Location = new System.Drawing.Point(24, 486);
             this.timeText.Name = "timeText";
-            this.timeText.Size = new System.Drawing.Size(41, 19);
+            this.timeText.Size = new System.Drawing.Size(51, 21);
             this.timeText.TabIndex = 6;
             this.timeText.Text = "Time:";
             // 
             // time
             // 
             this.time.AutoSize = true;
-            this.time.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.time.Location = new System.Drawing.Point(453, 513);
+            this.time.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.time.Location = new System.Drawing.Point(93, 486);
             this.time.Name = "time";
-            this.time.Size = new System.Drawing.Size(17, 19);
+            this.time.Size = new System.Drawing.Size(19, 21);
             this.time.TabIndex = 7;
             this.time.Text = "0";
             // 
             // cellsText
             // 
             this.cellsText.AutoSize = true;
-            this.cellsText.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cellsText.Location = new System.Drawing.Point(568, 513);
+            this.cellsText.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cellsText.Location = new System.Drawing.Point(26, 465);
             this.cellsText.Name = "cellsText";
-            this.cellsText.Size = new System.Drawing.Size(40, 19);
+            this.cellsText.Size = new System.Drawing.Size(49, 21);
             this.cellsText.TabIndex = 8;
             this.cellsText.Text = "Cells:";
             // 
-            // pictureBox2
+            // cellsCount
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(747, 2);
-            this.pictureBox2.MinimumSize = new System.Drawing.Size(658, 492);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(658, 507);
-            this.pictureBox2.TabIndex = 10;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBox2Paint);
-            // 
-            // gridCheckBox
-            // 
-            this.gridCheckBox.AutoSize = true;
-            this.gridCheckBox.Checked = true;
-            this.gridCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gridCheckBox.Location = new System.Drawing.Point(674, 394);
-            this.gridCheckBox.Name = "gridCheckBox";
-            this.gridCheckBox.Size = new System.Drawing.Size(69, 17);
-            this.gridCheckBox.TabIndex = 11;
-            this.gridCheckBox.Text = "draw grid";
-            this.gridCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // cellsCountText
-            // 
-            this.cellsCountText.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cellsCountText.Location = new System.Drawing.Point(641, 507);
-            this.cellsCountText.Name = "cellsCountText";
-            this.cellsCountText.Size = new System.Drawing.Size(100, 25);
-            this.cellsCountText.TabIndex = 12;
-            this.cellsCountText.Text = "600";
-            this.cellsCountText.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cellsCount.AutoSize = true;
+            this.cellsCount.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cellsCount.Location = new System.Drawing.Point(93, 465);
+            this.cellsCount.Name = "cellsCount";
+            this.cellsCount.Size = new System.Drawing.Size(19, 21);
+            this.cellsCount.TabIndex = 9;
+            this.cellsCount.Text = "0";
             // 
             // Form1
             // 
@@ -185,10 +164,8 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.LightGreen;
-            this.ClientSize = new System.Drawing.Size(1437, 549);
-            this.Controls.Add(this.gridCheckBox);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.cellsCountText);
+            this.ClientSize = new System.Drawing.Size(800, 544);
+            this.Controls.Add(this.cellsCount);
             this.Controls.Add(this.cellsText);
             this.Controls.Add(this.time);
             this.Controls.Add(this.timeText);
@@ -220,9 +197,7 @@
         private System.Windows.Forms.Label timeText;
         private System.Windows.Forms.Label time;
         private System.Windows.Forms.Label cellsText;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.CheckBox gridCheckBox;
-        private System.Windows.Forms.TextBox cellsCountText;
+        private System.Windows.Forms.Label cellsCount;
     }
 }
 
