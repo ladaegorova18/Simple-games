@@ -14,31 +14,38 @@ namespace Life
     public partial class Form1 : Form
     {
         private Game game;
-        private Bitmap bmp;
-        private Graphics g;
-        private PictureBox pictureBox1;
+        private Bitmap bmp1;
+        private Bitmap bmp2;
+        private Graphics g1;
+        private Graphics g2;
         private int width = 12;
         private int height = 10;
         private Pen pen;
         private Color oldColor;
+        private PictureBox pictureBox1;
         private Stopwatch stopwatch = new Stopwatch();
 
         public Form1()
         {
-            game = new Game(); // спросить бы пользователя, какой размер поля ему нужен
             pictureBox1 = new PictureBox();
             pictureBox1.Width = 800;
             pictureBox1.Height = 580 - 30;
-            bmp = new Bitmap(pictureBox1.Height, pictureBox1.Width);
+            bmp1 = new Bitmap(pictureBox1.Height, pictureBox1.Width);
+            pictureBox2 = new PictureBox();
+            pictureBox2.Width = 800;
+            pictureBox2.Height = 580 - 30;
+            bmp2 = new Bitmap(pictureBox2.Height, pictureBox2.Width);
             pen = new Pen(Color.Black);
-            g = Graphics.FromImage(bmp);
+            g1 = Graphics.FromImage(bmp1);
+            g2 = Graphics.FromImage(bmp2);
+            game = new Game();
             InitializeComponent();
-            var form2 = new Form2(game);
-            form2.Show();
         } // что-то с лейаутами, считать время
 
         private void StartClick(object sender, EventArgs e)
         {
+            // спросить бы пользователя, какой размер поля ему нужен
+            game.Limit = int.Parse(cellsCountText.Text);
             timer.Enabled = true;
             stopwatch.Start();
         }
@@ -67,13 +74,28 @@ namespace Life
 
         private void Form1Paint(object sender, PaintEventArgs e)
         {
-            var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2;
-            var solidBrush = new SolidBrush(Color.OliveDrab);
-            DrawCells(e, leftBorder, solidBrush);
-            DrawGrid(leftBorder, leftBorder + game.Size * width, height * game.Size, e);
+            var leftBorder = pictureBox1.Width / 2 - game.Size * width / 2 - 50;
+            var terraria = game.Terraria;
+            PaintField(Color.Green, terraria, leftBorder, e);
             stepsCount.Text = game.Steps.ToString();
             WriteTime();
-            cellsCount.Text = game.CountCells().ToString();
+            cellsCountText.Text = game.CountCells().ToString();
+        }
+
+        private void PictureBox2Paint(object sender, PaintEventArgs e)
+        {
+            var terraria = game.FindStableCells();
+            PaintField(Color.Brown, terraria, 0, e);
+        }
+
+        private void PaintField(Color color, int[,] terraria, int leftBorder, PaintEventArgs e)
+        {
+            var solidBrush = new SolidBrush(color);
+            DrawCells(e, leftBorder, solidBrush, terraria);
+            if (gridCheckBox.Checked)
+            {
+                DrawGrid(leftBorder, leftBorder + game.Size * width, height * game.Size, e);
+            }
         }
 
         private void WriteTime()
@@ -82,19 +104,19 @@ namespace Life
             time.Text = (currentTime).Substring(0, currentTime.Length - 6);
         }
 
-        private void DrawCells(PaintEventArgs e, int leftBorder, SolidBrush solidBrush)
+        private void DrawCells(PaintEventArgs e, int leftBorder, SolidBrush solidBrush, int[,] terraria)
         {
-            for (var i = 0; i < game.Size; ++i) // ага, и здесь можно лучше
+            for (var i = 0; i < game.Size; ++i)
             {
                 for (var j = 0; j < game.Size; ++j)
                 {
-                    if (game.ExistsBacteria(i, j))
+                    if (game.ExistsBacteria(i, j, terraria))
                     {
                         e.Graphics.FillEllipse(solidBrush, i * width + leftBorder, j * height, width, height);
-                        pictureBox1.Image = bmp;
                     }
                 }
             }
+            pictureBox1.Image = bmp1;
         }
 
         private void Form1Load(object sender, EventArgs e)
@@ -109,7 +131,12 @@ namespace Life
             stopwatch.Stop();
         }
 
-        private void OnExitClick(object sender, EventArgs e) => Close();
+        private void OnRestartClick(object sender, EventArgs e)
+        {
+            stopwatch.Restart();
+            game = new Game();
+            timer.Enabled = true;
+        }
 
         private void OnStartMouseEnter(object sender, EventArgs e) => OnMouseEnter(start);
 
@@ -119,9 +146,9 @@ namespace Life
 
         private void OnStopButtonMouseLeave(object sender, EventArgs e) => OnMouseLeave(stop);
 
-        private void OnExitButtonMouseEnter(object sender, EventArgs e) => OnMouseEnter(exit);
+        private void OnExitButtonMouseEnter(object sender, EventArgs e) => OnMouseEnter(restart);
 
-        private void OnExitMouseLeave(object sender, EventArgs e) => OnMouseLeave(exit);
+        private void OnExitMouseLeave(object sender, EventArgs e) => OnMouseLeave(restart);
 
         private void OnMouseEnter(Button button)
         {

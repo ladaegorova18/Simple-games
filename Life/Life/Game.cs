@@ -315,5 +315,5 @@ namespace Life
             }
             return counter;
         }
-    } 
+    }
 }
